@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule; // Jika menggunakan Laravel 10+
+
+
+class StoreBookingTransactionRequest extends FormRequest
+{
+
+    public function authorize():bool
+    {
+        return true;
+    }
+    // ... (Tambahkan authorization logic jika diperlukan, default true)
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'post_code' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+
+            'proof' => 'required|file|mimes:png,jpg,jpeg|max:2048',
+            
+            // Validasi untuk detail kosmetik (array)
+            'cosmetic_ids' => 'required|array',
+            'cosmetic_ids.*.id' => 'required|integer|exists:cosmetics,id',
+            'cosmetic_ids.*.quantity' => 'required|integer|min:1',
+        ];
+    }
+}

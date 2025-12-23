@@ -1,0 +1,43 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# =========================================================
+# BAGIAN KOREKSI & OPTIMASI CORS (mod_headers)
+# =========================================================
+<IfModule mod_headers.c>
+    # Gunakan 'Header always set' untuk requests GET/POST/etc dan 404/500
+    # Ganti "*" dengan origin aplikasi frontend Anda jika sudah Production (misalnya http://127.0.0.1:8000)
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    Header always set Access-Control-Allow-Credentials "true"
+    Header always set Access-Control-Max-Age "1728000"
+
+    # Penanganan Khusus untuk Preflight OPTIONS Request (Hanya OPTIONS)
+    # Ini diperlukan agar browser menerima persetujuan CORS dari server.
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [S=1,L]
+    
+    # Hapus Header yang tidak perlu pada response OPTIONS
+    Header unset ETag
+</IfModule>
