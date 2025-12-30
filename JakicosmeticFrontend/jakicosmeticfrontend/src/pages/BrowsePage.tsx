@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Category, Cosmetic } from "../types/type";
 import apiClient from "../services/apiServices";
-import { formatCurrency } from "../utils/formatCurrency";
-import { Link, useParams } from "react-router-dom";
-import { names } from "./../../node_modules/react-router-dom/dist/index";
+import { Link } from "react-router-dom";
 const fetchCategories = async () => {
   const response = await apiClient.get("/categories");
   return response.data.data;
