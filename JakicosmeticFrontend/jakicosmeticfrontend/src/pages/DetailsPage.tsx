@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { CartItem, type Cosmetic } from "./../types/type";
 import apiClient from "../services/apiServices";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { formatCurrency } from "../utils/formatCurrency";
 
 export default function DetailsPages() {
   const { slug } = useParams<{ slug: string }>();
